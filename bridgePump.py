@@ -14,23 +14,23 @@ import time
 
 
 if (len(sys.argv) < 1):
-	print "Use : python3 bridgePump.py <PORT>\nEg: python3 bridgePump.py COM1 "
+	print("Use : python3 bridgePump.py <PORT>\nEg: python3 bridgePump.py COM1 ")
 	sys.exit(0)
 else: 
 	portName = sys.argv[1]
 	
-#Open port	
-serialPort = serial.Serial(portName, 19200, timeout=1)	
+#Open port
+serialPort = serial.Serial(portName, 9200, timeout=1)
 
 #Infinite loop
 while(1):
 	#send "gpio read" command
-	serialPort.write("gpio read 0\r")
+	serialPort.write(b'gpio read 0\r')
 	#Verify if sensor is detecting water
-	if(serialPort.read() == 1) :
+	serialread = serialPort.read(25)
+	#print(serialread[13])
+	if serialread[13] == 49:
 		print("ALERT : Water intrusion !\r")
-	#Wait
-	time.sleep(0.1)
-		
+
 
 
